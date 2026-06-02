@@ -11,33 +11,36 @@ async def main():
 
     server_params = StdioServerParameters(
         command=sys.executable, # python  실행파일
-        args=['rag_server.py'],
+        args=['server.py'],
         env=env
     )
-    print("Strarting rag_server...")
+    print("Starting server...")
     # stdio (표준입출력)을 통해서 서버 프로세스를 실행하고 연결
-    stdio_client(server_params)
     async with stdio_client(server_params) as (read, write):
         # 세션 열기 및 초기화
         async with ClientSession(read, write) as session:
             await session.initialize()
             print("Server Connected")
 
-            # 서버의 search_documents Tool 호출
-            print(f"[request] calling search_documents...")
-            queries = ['바나나', 'MCP', '오렌지']
-            for query in queries:
-                print("====================")
-                print(f"Query: {query}")
-                result = await session.call_tool(
-                    "search_documents",
-                    arguments={"query": query}
-                )
-                print(f"[response] {result.content[0].text}")
+            # 서버의 get_greeting Tool 호출
+            print(f"[request] calling get_greeting...")
+            greeting_result = await session.call_tool(
+                "get_greeting",
+                arguments={"name": "홍길동"}
+            )
+            print(f"[response] {greeting_result.content[0].text}") 
             # mcp는 텍스트나 또는 json 형태로 감싸서 응답
 
-           
+            # 서버의 multiply Tool 호출
+            print(f"[request] calling multiply...")
+            multiply_result = await session.call_tool(
+                "multiply",
+                arguments={"a": 10.5, "b": 20.3}
+            )
+            print(f"[response] {multiply_result.content[0].text}") 
 
 if __name__ == "__main__":
     asyncio.run(main())
+    
+# mcp는 텍스트나 또는 json 형태로 감싸서 응답
 
