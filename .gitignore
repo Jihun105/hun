@@ -1,2 +1,6 @@
 .env
 pandas/data
+t5_sentiment_results/
+checkpoint-*/
+*.pt
+*.safetensors
