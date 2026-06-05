@@ -5,3 +5,5 @@ checkpoint-*/
 *.pt
 *.safetensors
 t5_lora_results/
+gpt_dpo_results/
+gpt2_sft_results/
